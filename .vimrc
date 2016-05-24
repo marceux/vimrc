@@ -123,6 +123,9 @@ Plug 'junegunn/limelight.vim'
 Plug 'terryma/vim-multiple-cursors' 
 Plug 'AndrewRadev/linediff.vim'
 Plug 'vim-airline/vim-airline'
+Plug 'Shougo/unite.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 
@@ -156,6 +159,36 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Clean"     : "✔︎",
     \ "Unknown"   : "?"
     \ }
+
+" Airline Custom Symbols
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
 
 " Custom AutoCMDs
 autocmd! User GoyoEnter Limelight
