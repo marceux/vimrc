@@ -1,7 +1,5 @@
 " Use the Solarized Dark theme
 set background=dark
-colorscheme sierra
-
 " Make Vim more useful
 set nocompatible
 " Use the OS clipboard by default (on versions compiled with `+clipboard`)
@@ -99,66 +97,79 @@ endif
 " Plugins
 call plug#begin('~/.vim/plugged')
 
-Plug 'Valloric/YouCompleteMe'
 Plug 'AlessandroYorba/Sierra'
+
+Plug 'wincent/command-t'
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+Plug 'Valloric/YouCompleteMe', { 'for': 'javascript' }
+Plug 'ternjs/tern_for_vim', { 'for': 'javascript' }
 Plug 'Raimondi/delimitMate'
+Plug 'tpope/vim-surround'
 Plug 'mattn/emmet-vim'
-Plug 'heavenshell/vim-jsdoc'
-Plug 'othree/jspc.vim'
-Plug 'scrooloose/syntastic'
-Plug 'ternjs/tern_for_vim'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'pangloss/vim-javascript'
-Plug 'jelera/vim-javascript-syntax'
-Plug 'othree/jsdoc-syntax.vim'
-Plug 'elzr/vim-json'
-Plug 'mxw/vim-jsx'
-Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'kien/ctrlp.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'AndrewRadev/linediff.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'rking/ag.vim'
 Plug 'junegunn/goyo.vim' 
 Plug 'junegunn/limelight.vim' 
-Plug 'terryma/vim-multiple-cursors' 
-Plug 'AndrewRadev/linediff.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'Shougo/unite.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'vim-airline/vim-airline-themes'
+
+Plug 'scrooloose/syntastic', { 'for': 'javascript' }
+Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript', 'jsx'] }
+Plug 'othree/jspc.vim', { 'for': ['javascript', 'jsx'] }
+Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'jsx'] }
+Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript', 'jsx'] }
+Plug 'mxw/vim-jsx', { 'for': ['javascript', 'jsx'] }
+Plug 'othree/jsdoc-syntax.vim', { 'for': 'javascript' }
+Plug 'elzr/vim-json', { 'for': 'json' }
+
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'edkolev/tmuxline.vim'
+
+Plug 'swekaj/php-foldexpr.vim'
 
 call plug#end()
 
+colorscheme sierra
+set gfn=Inconsolata\ for\ Powerline:h18
+
 " Tab Settings
-set tabstop=2
-set softtabstop=2
 set expandtab
-set shiftwidth=2
 set smarttab
+set softtabstop=2
+set shiftwidth=2
+
+autocmd Filetype php setlocal ts=4 sts=4 sw=4
+" Fix the indentation for switch cases for clarity
+let g:PHP_vintage_case_default_indent = 1
 
 " Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_javascript_checkers = ['eslint']
+autocmd Filetype javascript setlocal statusline+=%#warningmsg# statusline+=%{SyntasticStatuslineFlag()} statusline+=%*
+autocmd Filetype javascript let g:syntastic_check_on_open = 1
+autocmd Filetype javascript let g:syntastic_check_on_wq = 0
+autocmd Filetype javascript let g:syntastic_javascript_checkers = ['eslint']
+autocmd Filetype javascript let g:jsx_ext_required = 0
+autocmd Filetype javascript let g:jsdoc_allow_input_prompt = 1
+autocmd Filetype javascript let g:jsdoc_additional_descriptions = 1
+autocmd Filetype javascript let g:jsdoc_input_description = 1
+autocmd Filetype javascript let g:jsdoc_tags = 1
 
 " NERDtree Git Plugin
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ "Unknown"   : "?"
-    \ }
+" let g:NERDTreeIndicatorMapCustom = {
+    " \ "Modified"  : "✹",
+    " \ "Staged"    : "✚",
+    " \ "Untracked" : "✭",
+    " \ "Renamed"   : "➜",
+    " \ "Unmerged"  : "═",
+    " \ "Deleted"   : "✖",
+    " \ "Dirty"     : "✗",
+    " \ "Clean"     : "✔︎",
+    " \ "Unknown"   : "?"
+    " \ }
 
 " Airline Custom Symbols
 let g:airline_powerline_fonts = 1
@@ -189,12 +200,53 @@ let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
+let g:airline_theme='ubaryd'
 
-" Custom AutoCMDs
-autocmd! User GoyoEnter Limelight
-autocmd! User GoyoLeave Limelight!
+" Unite Searching
+" call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', '\(vendor\/\|\.vagrant\/\|\.git\/\|node_modules\/\)')
+" call unite#filters#matcher_default#use(['matcher_fuzzy'])
+
+" PHP Foldexpr Settings
+let b:phpfold_docblocks = 1
+let b:phpfold_doc_with_funcs = 0
+
+" Goyo Settings and Commands
+let g:goyo_width = 130
+
+function! s:goyo_enter()
+  silent !tmux set status off
+  silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  set noshowmode
+  set noshowcmd
+  set scrolloff=999
+  " Limelight 0.85
+  " ...
+endfunction
+
+function! s:goyo_leave()
+  silent !tmux set status on
+  silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  set showmode
+  set showcmd
+  set scrolloff=5
+  " Limelight!
+  " ...
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+" Ignores
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*,*/bower_components/*
+set wildignore+=*.gif,*.bmp,*.png,*.jpg
+
+" NERDCommenter Space
+let NERDSpaceDelims=1
 
 " Custom Hotkeys
-
-map <C-k> :NERDTreeToggle<CR>
-map <C-l> :Limelight<CR>
+nnoremap <C-g> :Goyo<CR>
+nnoremap <C-p> :CommandT<CR>
+nnoremap <C-o> :CommandTBuffer<CR>
+" nnoremap <C-p> :Unite -start-insert file_rec/async<CR>
+" nnoremap <C-o> :Unite -start-insert buffer<CR>
