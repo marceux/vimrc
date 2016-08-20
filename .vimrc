@@ -73,7 +73,6 @@ set title
 set showcmd
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3
-
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
 	let save_cursor = getpos(".")
@@ -113,7 +112,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-fugitive'
 Plug 'AndrewRadev/linediff.vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'rking/ag.vim'
+Plug 'mileszs/ack.vim'
 Plug 'junegunn/goyo.vim' 
 Plug 'junegunn/limelight.vim' 
 
@@ -125,6 +124,8 @@ Plug 'jelera/vim-javascript-syntax', { 'for': ['javascript', 'jsx'] }
 Plug 'mxw/vim-jsx', { 'for': ['javascript', 'jsx'] }
 Plug 'othree/jsdoc-syntax.vim', { 'for': 'javascript' }
 Plug 'elzr/vim-json', { 'for': 'json' }
+
+Plug 'hdima/python-syntax', { 'for': 'python' }
 
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -142,6 +143,11 @@ set expandtab
 set smarttab
 set softtabstop=2
 set shiftwidth=2
+
+" Use Silver Searcher instead of ack
+if executable('ag')
+    let g:ackprg = 'ag --vimgrep'
+endif
 
 autocmd Filetype php setlocal ts=4 sts=4 sw=4
 " Fix the indentation for switch cases for clarity
@@ -202,10 +208,6 @@ let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
 let g:airline_theme='ubaryd'
 
-" Unite Searching
-" call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', '\(vendor\/\|\.vagrant\/\|\.git\/\|node_modules\/\)')
-" call unite#filters#matcher_default#use(['matcher_fuzzy'])
-
 " PHP Foldexpr Settings
 let b:phpfold_docblocks = 1
 let b:phpfold_doc_with_funcs = 0
@@ -248,5 +250,3 @@ let NERDSpaceDelims=1
 nnoremap <C-g> :Goyo<CR>
 nnoremap <C-p> :CommandT<CR>
 nnoremap <C-o> :CommandTBuffer<CR>
-" nnoremap <C-p> :Unite -start-insert file_rec/async<CR>
-" nnoremap <C-o> :Unite -start-insert buffer<CR>
